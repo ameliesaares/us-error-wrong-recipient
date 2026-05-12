@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wrong Recipient ‚Äî US Error Diagnostic</title>
+  <style>
+    :root {
+      --green:       #02681F;
+      --mid-green:   #1D8A47;
+      --mint:        #B6E4C5;
+      --mint-light:  #E8F5EE;
+      --slate:       #003830;
+      --light-gray:  #EEEFEF;
+      --mid-gray:    #808184;
+      --border:      #D0D2D3;
+      --yellow:      #FDB02C;
+      --red:         #FF302E;
+      --dark-red:    #B10C0A;
+      --white:       #FFFFFF;
+      --black:       #000000;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--light-gray);
+      color: var(--black);
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--slate);
+      color: var(--white);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header .logo {
+      width: 32px; height: 32px;
+      background: var(--mid-green);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; color: var(--white);
+    }
+    header h1 { font-size: 16px; font-weight: 600; }
+    header p  { font-size: 12px; color: var(--mint); margin-top: 2px; }
+
+    .breadcrumb {
+      padding: 10px 24px;
+      font-size: 12px;
+      color: var(--mid-gray);
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .breadcrumb span { color: var(--mid-green); }
+    .breadcrumb .sep { color: var(--border); }
+
+    .main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 80px;
+    }
+
+    /* ‚îÄ‚îÄ QUESTION CARD ‚îÄ‚îÄ */
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      overflow: hidden;
+    }
+
+    .card-head {
+      padding: 24px 24px 0;
+    }
+    .card-head .step-badge {
+      display: inline-block;
+      background: var(--mint);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .card-head h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--slate);
+      line-height: 1.3;
+    }
+    .card-head .subtitle {
+      margin-top: 6px;
+      font-size: 14px;
+      color: var(--mid-gray);
+    }
+
+    .probe-box {
+      margin: 14px 24px 0;
+      background: #FFF9E6;
+      border-left: 3px solid var(--yellow);
+      border-radius: 0 6px 6px 0;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #6B4F00;
+    }
+    .probe-box strong { display: block; font-size: 11px; letter-spacing:.4px; text-transform:uppercase; margin-bottom:4px; color:#8B6700; }
+
+    .note-box {
+      margin: 14px 24px 0;
+      background: var(--mint-light);
+      border-left: 3px solid var(--mid-green);
+      border-radius: 0 6px 6px 0;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #1A4D2E;
+    }
+
+    .options {
+      padding: 16px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .opt-btn {
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: var(--white);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--black);
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .opt-btn:hover {
+      border-color: var(--mid-green);
+      background: var(--mint-light);
+    }
+    .opt-btn .arrow { margin-left: auto; color: var(--border); font-size: 16px; }
+    .opt-btn:hover .arrow { color: var(--mid-green); }
+
+    /* ‚îÄ‚îÄ ADMIN UI CHECK CARD ‚îÄ‚îÄ */
+    .adminui-hint {
+      margin: 0 24px 16px;
+      background: var(--light-gray);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+    .adminui-hint strong { display: block; color: var(--slate); margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .4px; }
+    .adminui-hint ol { padding-left: 18px; color: var(--mid-gray); line-height: 1.6; }
+
+    /* ‚îÄ‚îÄ OUTCOME CARDS ‚îÄ‚îÄ */
+    .outcome-card {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    }
+
+    .outcome-header {
+      padding: 20px 24px;
+      color: var(--white);
+    }
+    .outcome-header .verdict {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      opacity: .85;
+      margin-bottom: 6px;
+    }
+    .outcome-header h2 { font-size: 20px; font-weight: 700; }
+    .outcome-header p  { font-size: 14px; margin-top: 8px; opacity: .9; line-height: 1.5; }
+
+    .status-not_asserted  .outcome-header { background: var(--green); }
+    .status-customer_mistake .outcome-header { background: var(--mid-green); }
+    .status-asserted        .outcome-header { background: var(--dark-red); }
+    .status-investigate     .outcome-header { background: #B06000; }
+    .status-wrong_process   .outcome-header { background: var(--mid-gray); }
+    .status-cpu_cancel      .outcome-header { background: var(--green); }
+
+    .outcome-body {
+      background: var(--white);
+      padding: 20px 24px;
+    }
+
+    .outcome-body h3 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--mid-gray);
+      margin-bottom: 12px;
+    }
+
+    .action-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .action-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .action-badge {
+      flex-shrink: 0;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-top: 2px;
+    }
+    .badge-zd       { background: #E3EFFE; color: #1A56DB; }
+    .badge-macro    { background: #EDE9FE; color: #5B21B6; }
+    .badge-call     { background: #FEF3C7; color: #92400E; }
+    .badge-escalate { background: #FEE2E2; color: #991B1B; }
+    .badge-info     { background: var(--light-gray); color: var(--mid-gray); }
+
+    .tier2-box {
+      margin-top: 8px;
+      background: #FFF5F5;
+      border: 1px solid #FECACA;
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: #7F1D1D;
+    }
+    .tier2-box strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px; color: #991B1B; }
+
+    /* ‚îÄ‚îÄ NAVIGATION ‚îÄ‚îÄ */
+    .nav {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .btn-back {
+      padding: 10px 20px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: var(--white);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--black);
+    }
+    .btn-back:hover { border-color: var(--mid-green); color: var(--mid-green); }
+    .btn-restart {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: var(--green);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-restart:hover { background: var(--mid-green); }
+
+    /* ‚îÄ‚îÄ RULES BANNER ‚îÄ‚îÄ */
+    .rules-banner {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+    .rules-inner { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+
+    .rules-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+    }
+    .rules-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate);
+    }
+    .rules-chevron {
+      font-size: 11px;
+      color: var(--mid-gray);
+      transition: transform .2s;
+    }
+    .rules-chevron.collapsed { transform: rotate(180deg); }
+
+    .rules-body { padding-bottom: 16px; }
+    .rules-body.hidden { display: none; }
+
+    .rules-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    @media (max-width: 560px) { .rules-grid { grid-template-columns: 1fr; } }
+
+    .rule-block {
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .rule-block p { margin-top: 6px; color: inherit; opacity: .9; }
+    .rule-label {
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      margin-bottom: 4px;
+    }
+    .rule-zd {
+      margin-top: 8px !important;
+      font-weight: 600;
+      font-size: 12px;
+      opacity: 1 !important;
+    }
+
+    .rule-green      { background: var(--mint-light); color: #1A4D2E; border: 1px solid var(--mint); }
+    .rule-dark-green { background: #E6F4EA; color: #1A4D2E; border: 1px solid #A8D5B5; }
+    .rule-red        { background: #FEF2F2; color: #7F1D1D; border: 1px solid #FECACA; }
+    .rule-orange     { background: #FFFBEB; color: #78350F; border: 1px solid #FDE68A; }
+
+    .rule-footer {
+      font-size: 12px;
+      color: var(--mid-gray);
+      background: var(--light-gray);
+      border-radius: 6px;
+      padding: 10px 12px;
+      line-height: 1.6;
+    }
+    .rule-footer strong { color: var(--slate); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">TTS</div>
+  <div>
+    <h1>Wrong Recipient ‚Äî US Error Diagnostic</h1>
+    <p>Answer each question to reach the correct handling outcome</p>
+  </div>
+</header>
+
+<div class="breadcrumb" id="breadcrumb">Start</div>
+
+<div class="rules-banner" id="rulesBanner">
+  <div class="rules-inner">
+    <button class="rules-toggle" onclick="toggleRules()" id="rulesToggleBtn">
+      <span class="rules-title">&#9432; Rules of thumb ‚Äî read before using</span>
+      <span class="rules-chevron" id="rulesChevron">‚ñ≤</span>
+    </button>
+    <div class="rules-body" id="rulesBody">
+      <div class="rules-grid">
+
+        <div class="rule-block rule-green">
+          <div class="rule-label">Customer mistake (MM) ‚Üí NOT a TTS error</div>
+          <p>For <strong>Mobile Money</strong>: if the customer entered wrong details (wrong name, wrong number, wrong contact) but the name check confirms the correct recipient, <strong>we are not obligated to refund</strong>. We provided a warning, pre-disclosure page, and cancellation rights.</p>
+          <p><strong>Exception ‚Äî bank transfers:</strong> a wrong account number is always investigated even if the customer admits the mistake. See the red rule.</p>
+          <p class="rule-zd">‚ùå Do NOT tick the Error field in ZD (MM only)</p>
+        </div>
+
+        <div class="rule-block rule-dark-green">
+          <div class="rule-label">Names match ‚Üí confirmed correct delivery</div>
+          <p>If "Name from provider" matches "Name entered by user" (100%, or 2/3, or 3/4 names), <strong>we can confirm the transfer reached the designated recipient</strong>. Error is not asserted.</p>
+          <p><strong>MM only:</strong> do not tick the Error field. <strong>Bank transfers:</strong> always tick the Error field even when names match, because a wrong name is always initially recorded as a potential error for bank transfers.</p>
+          <p class="rule-zd">‚ùå MM: Do NOT tick &nbsp;|&nbsp; ‚úÖ Bank: Always tick</p>
+        </div>
+
+        <div class="rule-block rule-red">
+          <div class="rule-label">Cannot confirm delivery ‚Üí error asserted</div>
+          <p>If names don't match, no name check was done, or the customer reports an issue we can't immediately dismiss (wrong account number, wrong bank, currency mismatch, closed account), <strong>we must investigate</strong>. Tier 2 refunds and attempts fund recovery.</p>
+          <p class="rule-zd">‚úÖ Tick the Error field in ZD</p>
+        </div>
+
+        <div class="rule-block rule-orange">
+          <div class="rule-label">No name check done ‚Üí always escalate</div>
+          <p>If "Name from provider" is empty, we cannot confirm or deny correct delivery. <strong>Always escalate to Tier 2</strong> to request a Proof of Delivery (POD) from the partner. Do not close the case without a POD or 90-day SLA.</p>
+          <p class="rule-zd">‚úÖ Tick the Error field in ZD</p>
+        </div>
+
+      </div>
+
+      <div class="rule-footer">
+        <strong>Bank transfers only:</strong> Wrong account number or wrong digit count always requires a full Tier 2 investigation ‚Äî even if names match, never close the case at Tier 1.<br>
+        <strong>CPU transfers:</strong> The cashout agent will verify the recipient ID before paying out the funds, so wrong delivery is extremely rare. If the transfer hasn't been picked up yet, offer cancellation ‚Äî it's not a US error.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main" id="main"></div>
+
+<script>
+// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// RULES BANNER TOGGLE
+// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+function toggleRules() {
+  const body    = document.getElementById('rulesBody');
+  const chevron = document.getElementById('rulesChevron');
+  const collapsed = body.classList.toggle('hidden');
+  chevron.classList.toggle('collapsed', collapsed);
+}
+
+// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// DECISION TREE
+// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+const NODES = {
+
+  // ‚îÄ‚îÄ ROOT ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+  start: {
+    badge: 'Step 1',
+    q: 'What type of transfer is this?',
+    sub: 'Check Admin UI if not sure.',
+    opts: [
+      { label: 'Mobile Money (MM)',    next: 'mm_q1' },
+      { label: 'Bank Transfer',        next: 'bank_q1' },
+      { label: 'Cash Pick Up (CPU)',   next: 'cpu_q1' },
+    ]
+  },
+
+  // ‚îÄ‚îÄ MOBILE MONEY ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+  mm_q1: {
+    badge: 'MM ‚Äî Step 2',
+    q: 'Ask the customer: "What do you think went wrong with this transfer?"',
+    sub: 'Select the scenario that best matches what they\'re telling you.',
+    probe: { label: 'Probing questions to ask', text: '"Can you tell me what happened? Was it the name you typed, the phone number, or something else entirely?" ‚Äî get the specifics before proceeding.' },
+    opts: [
+      { label: 'They typed the wrong recipient name',                                     next: 'mm_wrong_name' },
+      { label: 'They typed the wrong phone / MoMo number',                               next: 'mm_wrong_phone' },
+      { label: 'They sent to the wrong person entirely (selected wrong contact / meant someone else)', next: 'mm_wrong_person' },
+      { label: 'They used an old number that may have been reassigned to someone else',   next: 'mm_old_number' },
+      { label: 'They used a nickname or descriptor as the recipient name instead of a real name (e.g. "best friend")', next: 'out_descriptor_mm' },
+      { label: 'The recipient\'s Mobile Money account was inactive', next: 'out_inactive_mm' },
+      { label: 'They entered correct details but the funds were delivered to a different person (no mistake on their end)', next: 'out_tts_error' },
+      { label: 'The money never arrived ‚Äî recipient says they didn\'t receive it (but details may be correct)', next: 'out_not_wr' },
+    ]
+  },
+
+  mm_wrong_name: {
+    badge: 'MM ‚Äî Wrong name',
+    q: 'Check Admin UI ‚Üí Recipient section. Is "Name from provider" populated?',
+    sub: 'Go to the transfer in Admin UI ‚Üí Recipient section ‚Üí look for "Name from provider".',
+    probe: { label: 'Clarify with customer', text: '"Was the issue specifically with the name you typed? Was the phone number correct?" ‚Äî confirm the name was the only thing wrong.' },
+    adminui: true,
+    opts: [
+      { label: '"Name from provider" is populated (name check was done)',  next: 'mm_name_match' },
+      { label: '"Name from provider" is empty (no name check)',             next: 'out_pod' },
+    ]
+  },
+
+  mm_name_match: {
+    badge: 'MM ‚Äî Name check done',
+    q: 'Compare "Name entered by user" vs "Name from provider". How well do they match?',
+    note: 'A partial match (2/3 or 3/4 names) is still enough to confirm the correct recipient.',
+    opts: [
+      { label: '100% match',                                       next: 'out_not_asserted' },
+      { label: 'Partial match ‚Äî 2 out of 3 names, or 3 out of 4', next: 'out_not_asserted' },
+      { label: 'Poor match ‚Äî 1 out of 3, or 2 out of 4, or 1 out of 4', next: 'out_asserted_refund' },
+      { label: 'No match at all',                                  next: 'out_asserted_refund' },
+    ]
+  },
+
+  mm_wrong_phone: {
+    badge: 'MM ‚Äî Wrong phone number',
+    q: 'Check Admin UI ‚Üí is "Name from provider" populated?',
+    sub: 'The name match tells us whether the money actually reached the intended person.',
+    probe: { label: 'Clarify with customer', text: '"Was the issue the phone number you typed? Did you type it manually, or select from contacts? What name did you enter for the recipient?" ‚Äî this helps us check if the name aligns with who received it.' },
+    adminui: true,
+    opts: [
+      { label: '"Name from provider" is populated', next: 'mm_phone_name_match' },
+      { label: '"Name from provider" is empty',     next: 'out_pod' },
+    ]
+  },
+
+  mm_phone_name_match: {
+    badge: 'MM ‚Äî Wrong phone / name check',
+    q: 'How well do "Name entered by user" and "Name from provider" match?',
+    note: 'For MM transfers: if the name the customer entered matches the provider name, there is no evidence the money went to the wrong person ‚Äî even if the phone number was slightly different. This would be a customer mistake, not a TTS error.',
+    opts: [
+      { label: '100% match or partial (2/3 or 3/4)',  next: 'out_customer_mistake' },
+      { label: 'Poor match or no match at all',        next: 'out_asserted_refund' },
+    ]
+  },
+
+  mm_wrong_person: {
+    badge: 'MM ‚Äî Wrong person',
+    q: 'Did the customer admit they selected the wrong contact / person themselves?',
+    probe: { label: 'Clarify with customer', text: '"Did you select the recipient yourself in the app? Did you mean to send to someone different, or do you believe we sent it to the wrong person?" ‚Äî key distinction.' },
+    opts: [
+      { label: 'Yes ‚Äî they admit selecting the wrong contact / meant to send to someone else', next: 'out_customer_mistake' },
+      { label: 'No ‚Äî they claim correct details were entered but it went to the wrong person ‚Üí check Admin UI: name check was done (name from provider is populated)', next: 'mm_name_match' },
+      { label: 'No ‚Äî they claim correct details but no name check was done (name from provider is empty)', next: 'out_pod' },
+    ]
+  },
+
+  mm_old_number: {
+    badge: 'MM ‚Äî Old / reassigned number',
+    q: 'Check Admin UI ‚Üí is "Name from provider" populated?',
+    sub: 'An old or reassigned number is treated like a wrong phone number ‚Äî the name match determines the outcome.',
+    probe: { label: 'Clarify with customer', text: '"Did you use a number you\'d sent to before? Do you know if that number might belong to someone else now?" ‚Äî helps confirm the reassignment scenario.' },
+    adminui: true,
+    opts: [
+      { label: '"Name from provider" is populated',              next: 'mm_old_number_match' },
+      { label: '"Name from provider" is empty (no name check)',  next: 'out_pod' },
+    ]
+  },
+
+  mm_old_number_match: {
+    badge: 'MM ‚Äî Old number / name check',
+    q: 'How well do the names match?',
+    note: 'We are not obligated to verify whether a number has been reassigned. If names match, delivery was to the correct account at the time.',
+    opts: [
+      { label: '100% match or partial (2/3 or 3/4)',  next: 'out_old_number_customer' },
+      { label: 'Poor match or no match',               next: 'out_asserted_refund' },
+    ]
+  },
+
+  // ‚îÄ‚îÄ BANK TRANSFER ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+  bank_q1: {
+    badge: 'Bank ‚Äî Step 2',
+    q: 'Ask the customer: "What do you think went wrong with this transfer?"',
+    sub: 'Select the scenario that best matches what they\'re telling you.',
+    probe: { label: 'Probing questions to ask', text: '"Was the issue with the name you typed, the account number you typed, or something else? Can you tell me exactly what you believe was incorrect?" ‚Äî be specific before proceeding.' },
+    opts: [
+      { label: 'They typed the wrong recipient name (account number may have been correct)', next: 'bank_wrong_name' },
+      { label: 'They typed the wrong bank account number',                                   next: 'out_asserted_bank_acct' },
+      { label: 'They typed the wrong number of digits in the account number',                next: 'out_asserted_bank_acct' },
+      { label: 'They selected the wrong bank name',                                          next: 'bank_wrong_bank_name' },
+      { label: 'The recipient\'s bank account was closed',                            next: 'out_asserted_closed' },
+      { label: 'The money arrived in the wrong currency',                                    next: 'out_asserted_currency' },
+      { label: 'They sent to the wrong country',                                             next: 'out_asserted_refund' },
+      { label: 'They sent to the wrong person entirely (selected wrong contact)',             next: 'bank_wrong_person' },
+      { label: 'They entered correct details but the funds were delivered to a different person (no mistake on their end)', next: 'out_tts_error' },
+    ]
+  },
+
+  bank_wrong_name: {
+    badge: 'Bank ‚Äî Wrong name',
+    q: 'Check Admin UI ‚Üí is "Name from provider" populated?',
+    sub: 'For bank transfers we rely on account number, but name match supports confirmation of the designated recipient.',
+    note: 'For bank transfers, a wrong recipient name is always recorded as a potential error ‚Äî unlike MM. The name check is how we investigate. Tick the Error field in ZD regardless of the outcome.',
+    probe: { label: 'Clarify with customer', text: '"Was it the name that was wrong, or the account number? Can you confirm the account number you entered?" ‚Äî important to distinguish the two.' },
+    adminui: true,
+    opts: [
+      { label: '"Name from provider" is populated', next: 'bank_name_match' },
+      { label: '"Name from provider" is empty',     next: 'out_pod' },
+    ]
+  },
+
+  bank_name_match: {
+    badge: 'Bank ‚Äî Name check done',
+    q: 'How well do "Name entered by user" and "Name from provider" match?',
+    note: 'For bank transfers, name match is used alongside the account number to confirm the designated recipient.',
+    opts: [
+      { label: '100% match or partial (2/3 or 3/4)',  next: 'out_bank_name_resolved' },
+      { label: 'Poor match or no match',               next: 'out_asserted_refund' },
+    ]
+  },
+
+  bank_wrong_bank_name: {
+    badge: 'Bank ‚Äî Wrong bank name',
+    q: 'Check Admin UI ‚Üí is "Name from provider" populated?',
+    sub: 'Wrong bank name is now treated as a potential error ‚Äî we need to confirm the funds reached the designated recipient.',
+    opts: [
+      { label: '"Name from provider" is populated and names match well (100%, 2/3, 3/4)',  next: 'out_not_asserted' },
+      { label: '"Name from provider" is empty or names do not match',                       next: 'out_asserted_bank_name' },
+    ]
+  },
+
+  bank_wrong_person: {
+    badge: 'Bank ‚Äî Wrong person',
+    q: 'Did the customer admit they selected the wrong contact / person themselves?',
+    probe: { label: 'Clarify with customer', text: '"Did you select the recipient yourself? Did you mean to send to a completely different person, or do you believe we sent it incorrectly?" ‚Äî key distinction.' },
+    opts: [
+      { label: 'Yes ‚Äî they chose the wrong contact themselves',                            next: 'out_customer_mistake' },
+      { label: 'No ‚Äî they entered correct details but believe it went to the wrong person', next: 'bank_name_match' },
+    ]
+  },
+
+  // ‚îÄ‚îÄ CPU ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+  cpu_q1: {
+    badge: 'CPU ‚Äî Step 2',
+    q: 'What is the customer reporting?',
+    sub: 'CPU agents verify identity and require ID before payout ‚Äî wrong delivery is very unlikely.',
+    opts: [
+      { label: 'They made a mistake in recipient details and the transfer has NOT been picked up yet', next: 'out_cpu_cancel' },
+      { label: 'They claim the transfer was paid out to the wrong person',                             next: 'out_asserted_refund' },
+    ]
+  },
+
+  // ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+  // OUTCOMES
+  // ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+
+  out_not_asserted: {
+    type: 'outcome',
+    status: 'not_asserted',
+    title: 'Error NOT Asserted',
+    summary: 'The transfer was delivered to the designated recipient. We have confirmed this via name match. No refund obligation.',
+    actions: [
+      { badge: 'info',  text: 'Do NOT tick the "Error" field in ZD ‚Äî this is not an error.' },
+      { badge: 'macro', text: 'Email / Written ‚Üí US Error::Wrong recipient (No error)' },
+      { badge: 'macro', text: 'Chat ‚Üí Chat::US Customer::Wrong recipient (Reject)' },
+      { badge: 'call',  text: 'Call script: "We have investigated and confirmed the transfer was delivered to the designated recipient. This is not a TTS error."' },
+    ]
+  },
+
+  out_customer_mistake: {
+    type: 'outcome',
+    status: 'customer_mistake',
+    title: 'Customer Mistake ‚Äî Error NOT Asserted',
+    summary: 'The customer entered incorrect details, but the transfer was delivered exactly as instructed. We are not obligated to refund ‚Äî we provided a warning, pre-disclosure/confirmation page, and cancellation rights before processing.',
+    actions: [
+      { badge: 'info',  text: 'Do NOT tick the "Error" field in ZD ‚Äî this is a customer mistake, not a TTS error.' },
+      { badge: 'macro', text: 'Email / Written ‚Üí US Error::Wrong recipient (No error)' },
+      { badge: 'macro', text: 'Chat ‚Üí Chat::US Customer::Wrong recipient (Reject)' },
+      { badge: 'call',  text: 'Call script: "We can see the transfer was delivered to the recipient details as entered and confirmed on the pre-disclosure page. As the details were entered by you, this is not an error on our side."' },
+      { badge: 'info',  text: 'Optional: you may offer a best-effort reversal as a courtesy if the corridor allows. Set clear expectations ‚Äî this is not guaranteed.' },
+    ]
+  },
+
+  out_old_number_customer: {
+    type: 'outcome',
+    status: 'customer_mistake',
+    title: 'Old / Reassigned Number ‚Äî Customer Liability',
+    summary: 'Names match confirms the transfer was delivered to the registered account at the time. We are not obligated to verify whether a number has since been reassigned. Customer is liable, but we can attempt a courtesy reversal.',
+    actions: [
+      { badge: 'zd',    text: 'Tick the "Error" field in ZD ‚Äî this is recorded as a potential error even though the customer is liable.' },
+      { badge: 'macro', text: 'Email / Written ‚Üí US Error::Wrong recipient (No error)' },
+      { badge: 'call',  text: 'Call script: "We can see the transfer was delivered to the account registered to that number at the time. We are not in a position to guarantee numbers remain with the same person, and this is not a TTS error."' },
+      { badge: 'info',  text: 'Optional: offer a best-effort reversal as courtesy ‚Äî not guaranteed.' },
+    ]
+  },
+
+  out_asserted_refund: {
+    type: 'outcome',
+    status: 'asserted',
+    title: 'Error Asserted ‚Äî Escalate to Tier 2',
+    summary: 'We cannot confirm the transfer reached the designated recipient. Error is asserted. Tier 2 will issue a refund and attempt fund recovery via the partner.',
+    actions: [
+      { badge: 'zd',      text: 'Tick the "Error" field in ZD' },
+      { badge: 'call',    text: 'Call script: "Thank you for raising this. We will investigate promptly and share our findings with you."' },
+      { badge: 'macro',   text: 'Email / Calls ‚Üí US error::Investigation started' },
+      { badge: 'macro',   text: 'Chat ‚Üí Chat::US Customer::Wrong recipient (Accept)' },
+      { badge: 'escalate',text: 'Escalate to Tier 2 ‚Üí Comment::US error case [Escalated]' },
+    ],
+    tier2: 'Tier 2: Perform Unconditional Refund (reason: "Wrong recipient or wallet"). Add mandatory account note. Send macro US Error::Wrong recipient [error asserted]. Then escalate to partner for fund recovery ‚Üí US Error::Reversal request to partner via SC.'
+  },
+
+  out_asserted_bank_acct: {
+    type: 'outcome',
+    status: 'asserted',
+    title: 'Error Asserted ‚Äî Wrong Bank Account Number / Digits',
+    summary: 'For bank transfers, a wrong account number or wrong digit count is always treated as a potential error ‚Äî even if the customer admits they typed it wrong. Unlike MM transfers, we cannot confirm correct delivery from a name match alone. We must investigate where the funds actually landed and attempt to recover them.',
+    actions: [
+      { badge: 'zd',      text: 'Tick the "Error" field in ZD' },
+      { badge: 'call',    text: 'Call script: "Thank you for raising this. We will investigate promptly and share our findings with you."' },
+      { badge: 'macro',   text: 'Email / Calls ‚Üí US error::Investigation started' },
+      { badge: 'macro',   text: 'Chat ‚Üí Chat::US Customer::Wrong recipient (Accept)' },
+      { badge: 'escalate',text: 'Escalate to Tier 2 ‚Üí Comment::US error case [Escalated]' },
+    ],
+    tier2: 'Tier 2: Escalate to partner to establish where the funds were delivered. If confirmed delivery to the designated recipient ‚Üí not asserted, no refund. If unconfirmed or delivered elsewhere ‚Üí error asserted ‚Üí refund + reversal attempt.'
+  },
+
+  out_asserted_bank_name: {
+    type: 'outcome',
+    status: 'asserted',
+    title: 'Error Asserted ‚Äî Wrong Bank Name (No Confirmed Delivery)',
+    summary: 'Wrong bank name selected with no name match from provider ‚Äî we cannot confirm the designated recipient received the funds. Error is asserted.',
+    actions: [
+      { badge: 'zd',      text: 'Tick the "Error" field in ZD' },
+      { badge: 'macro',   text: 'Email / Calls ‚Üí US error::Investigation started' },
+      { badge: 'macro',   text: 'Chat ‚Üí Chat::US Error::Investigating' },
+      { badge: 'escalate',text: 'Escalate to Tier 2 ‚Üí Comment::US error case [Escalated]' },
+    ],
+    tier2: 'Tier 2: Request POD from partner ‚Üí US Error::POD request to partner via SC [English]. If POD confirms correct delivery ‚Üí not asserted. If no match or no POD after 90 days ‚Üí asserted ‚Üí refund + reversal attempt.'
+  },
+
+  out_asserted_closed: {
+    type: 'outcome',
+    status: 'asserted',
+    title: 'Error Asserted ‚Äî Closed Bank Account (Non-Delivery)',
+    summary: 'Sending to a closed bank account is a non-delivery error. We must investigate and attempt to recover the funds.',
+    actions: [
+      { badge: 'zd',      text: 'Tick the "Error" field in ZD' },
+      { badge: 'macro',   text: 'Email / Calls ‚Üí US error::Investigation started' },
+      { badge: 'macro',   text: 'Chat ‚Üí Chat::US Error::Investigating' },
+      { badge: 'escalate',text: 'Escalate to Tier 2 ‚Üí Comment::US error case [Escalated]' },
+    ],
+    tier2: 'Tier 2: Investigate non-delivery with partner. Request POD/confirmation ‚Üí US Error::POD request to partner via SC [English]. Refund if delivery cannot be confirmed.'
+  },
+
+  out_asserted_currency: {
+    type: 'outcome',
+    status: 'asserted',
+    title: 'Error Asserted ‚Äî Currency Mismatch',
+    summary: 'Failure to deliver the stated currency to the recipient is a regulatory error. We must either deliver the correct currency or refund.',
+    actions: [
+      { badge: 'zd',      text: 'Tick the "Error" field in ZD' },
+      { badge: 'macro',   text: 'Email / Calls ‚Üí US error::Investigation started' },
+      { badge: 'macro',   text: 'Chat ‚Üí Chat::US Error::Investigating' },
+      { badge: 'escalate',text: 'Escalate to Tier 2 ‚Üí Comment::US error case [Escalated]' },
+    ],
+    tier2: 'Tier 2: Investigate with partner. Determine if correct currency can be delivered. If not ‚Üí refund and attempt reversal.'
+  },
+
+  out_pod: {
+    type: 'outcome',
+    status: 'investigate',
+    title: 'No Name Check Available ‚Äî Escalate for Proof of Delivery',
+    summary: 'No name check was performed at the time of transfer. We cannot confirm the designated recipient without a Proof of Delivery (POD) from the partner.',
+    actions: [
+      { badge: 'zd',      text: 'Tick the "Error" field in ZD' },
+      { badge: 'call',    text: 'Call script: "Thank you for raising this. We will investigate promptly and share our findings with you."' },
+      { badge: 'macro',   text: 'Email / Calls ‚Üí US error::Investigation started' },
+      { badge: 'macro',   text: 'Chat ‚Üí Chat::US Error::Investigating' },
+      { badge: 'escalate',text: 'Escalate to Tier 2 ‚Üí Comment::US error case [Escalated]' },
+    ],
+    tier2: 'Tier 2: Request POD ‚Üí US Error::POD request to partner via SC [English].\n‚Ä¢ POD confirms match ‚Üí error NOT asserted ‚Üí macro US Error::Wrong recipient (No error).\n‚Ä¢ POD shows mismatch ‚Üí error asserted ‚Üí refund + reversal.\n‚Ä¢ No POD after 90 days ‚Üí error asserted ‚Üí refund + reversal.'
+  },
+
+  out_tts_error: {
+    type: 'outcome',
+    status: 'asserted',
+    title: 'Error Asserted ‚Äî Possible TTS / Partner Error',
+    summary: 'The customer entered the correct details but the funds appear to have been delivered to a different person. This is a potential TTS or partner error and must be investigated immediately.',
+    actions: [
+      { badge: 'zd',      text: 'Tick the "Error" field in ZD' },
+      { badge: 'call',    text: 'Call script: "Thank you for raising this. We take this very seriously and will investigate as a priority. We will share our findings with you promptly."' },
+      { badge: 'macro',   text: 'Email / Calls ‚Üí US error::Investigation started' },
+      { badge: 'macro',   text: 'Chat ‚Üí Chat::US Customer::Wrong recipient (Accept)' },
+      { badge: 'escalate',text: 'Escalate to Tier 2 ‚Üí Comment::US error case [Escalated]' },
+    ],
+    tier2: 'Tier 2: This is a potential TTS/partner error ‚Äî treat as high priority. Request POD from partner ‚Üí US Error::POD request to partner via SC [English]. If POD confirms funds went to wrong person ‚Üí error asserted ‚Üí refund immediately + reversal request. If POD confirms correct delivery ‚Üí not asserted, share proof with customer.'
+  },
+
+  out_bank_name_resolved: {
+    type: 'outcome',
+    status: 'not_asserted',
+    title: 'Error Recorded ‚Äî Resolved After Investigation',
+    summary: 'The name check confirms the transfer was delivered to the designated recipient. The error is not asserted. However, for bank transfers a wrong name is always initially recorded as a potential error.',
+    actions: [
+      { badge: 'zd',    text: 'Tick the "Error" field in ZD ‚Äî always required for bank transfer name disputes, even when resolved.' },
+      { badge: 'macro', text: 'Email / Written ‚Üí US Error::Wrong recipient (No error)' },
+      { badge: 'macro', text: 'Chat ‚Üí Chat::US Customer::Wrong recipient (Reject)' },
+      { badge: 'call',  text: 'Call script: "We have investigated and confirmed the transfer was delivered to the designated recipient. This is not a TTS error."' },
+    ]
+  },
+
+  out_inactive_mm: {
+    type: 'outcome',
+    status: 'asserted',
+    title: 'Error Asserted ‚Äî Inactive Mobile Money Account',
+    summary: 'Sending to an inactive MM account is recorded as a potential error. We must investigate to confirm whether the money was delivered. We are not obligated to attempt a reversal, but may do so as a courtesy.',
+    actions: [
+      { badge: 'zd',      text: 'Tick the "Error" field in ZD' },
+      { badge: 'macro',   text: 'Email / Calls ‚Üí US error::Investigation started' },
+      { badge: 'macro',   text: 'Chat ‚Üí Chat::US Error::Investigating' },
+      { badge: 'escalate',text: 'Escalate to Tier 2 ‚Üí Comment::US error case [Escalated]' },
+    ],
+    tier2: 'Tier 2: Investigate with partner to confirm whether funds were delivered. If not delivered ‚Üí error confirmed ‚Üí refund. Reversal attempt is courtesy only, not mandatory.'
+  },
+
+  out_descriptor_mm: {
+    type: 'outcome',
+    status: 'asserted',
+    title: 'Error Asserted ‚Äî Nickname / Descriptor Used as Recipient Name',
+    summary: 'Using a nickname or descriptor (e.g. "best friend") instead of a real name is always recorded as an error ‚Äî we should not have allowed it. We must investigate to confirm who actually received the funds. This remains an error regardless of the investigation outcome. No obligation to reverse, but we may do so as courtesy.',
+    actions: [
+      { badge: 'zd',      text: 'Tick the "Error" field in ZD' },
+      { badge: 'call',    text: 'Call script: "Thank you for raising this. We will investigate and share our findings with you promptly."' },
+      { badge: 'macro',   text: 'Email / Calls ‚Üí US error::Investigation started' },
+      { badge: 'macro',   text: 'Chat ‚Üí Chat::US Customer::Wrong recipient (Accept)' },
+      { badge: 'escalate',text: 'Escalate to Tier 2 ‚Üí Comment::US error case [Escalated]' },
+    ],
+    tier2: 'Tier 2: Investigate to confirm who received the funds. Reversal attempt is courtesy only ‚Äî not mandatory. This case remains classified as an error regardless of outcome.'
+  },
+
+  out_not_wr: {
+    type: 'outcome',
+    status: 'wrong_process',
+    title: 'Not a Wrong Recipient Error',
+    summary: 'If the customer entered the correct recipient details but the money never arrived, this is a non-delivery or collection issue ‚Äî not a wrong recipient error.',
+    actions: [
+      { badge: 'info', text: 'Troubleshoot as a collection issue: check delivery status in Admin UI.' },
+      { badge: 'info', text: 'If the transfer shows as delivered but funds are missing without explanation, consider the Potential Ghost Transfer process.' },
+      { badge: 'info', text: 'Do not tick the "Error" field for a pure non-delivery / collection issue.' },
+    ]
+  },
+
+  out_cpu_cancel: {
+    type: 'outcome',
+    status: 'cpu_cancel',
+    title: 'CPU ‚Äî Not Yet Picked Up: Offer Cancellation',
+    summary: 'Since the transfer has not been picked up yet, we can offer to cancel and refund. This is NOT categorised as a US error.',
+    actions: [
+      { badge: 'info', text: 'This is a cancellation request, not a US error.' },
+      { badge: 'info', text: 'Offer to cancel the transfer and refund the customer.' },
+      { badge: 'info', text: 'Do NOT tick the "Error" field in ZD.' },
+    ]
+  },
+};
+
+// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// STATE
+// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+let history = ['start'];
+
+function current() { return history[history.length - 1]; }
+
+function choose(nextId) {
+  history.push(nextId);
+  render();
+}
+
+function back() {
+  if (history.length > 1) { history.pop(); render(); }
+}
+
+function restart() {
+  history = ['start'];
+  render();
+}
+
+// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// BREADCRUMB
+// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+const LABELS = {
+  start:              'Start',
+  mm_q1:             'MM ‚Äî What happened',
+  mm_wrong_name:     'MM ‚Äî Wrong name',
+  mm_name_match:     'Name check',
+  mm_wrong_phone:    'MM ‚Äî Wrong phone',
+  mm_phone_name_match: 'Name check',
+  mm_wrong_person:   'MM ‚Äî Wrong person',
+  mm_old_number:     'MM ‚Äî Old number',
+  mm_old_number_match: 'Name check',
+  bank_q1:           'Bank ‚Äî What happened',
+  bank_wrong_name:   'Bank ‚Äî Wrong name',
+  bank_name_match:   'Name check',
+  bank_wrong_bank_name: 'Bank ‚Äî Wrong bank',
+  bank_wrong_person: 'Bank ‚Äî Wrong person',
+  cpu_q1:            'CPU',
+};
+
+function breadcrumb() {
+  const el = document.getElementById('breadcrumb');
+  const parts = history.map((id, i) => {
+    const label = LABELS[id] || (NODES[id]?.title ? NODES[id].title.substring(0,30)+'‚Ä¶' : id);
+    if (i === history.length - 1) return `<span>${label}</span>`;
+    return `<span style="color:#808184">${label}</span>`;
+  });
+  el.innerHTML = parts.join('<span class="sep"> ‚Ä∫ </span>');
+}
+
+// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// RENDER
+// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+function render() {
+  const node = NODES[current()];
+  if (!node) return;
+  breadcrumb();
+
+  const main = document.getElementById('main');
+
+  if (node.type === 'outcome') {
+    main.innerHTML = renderOutcome(node);
+  } else {
+    main.innerHTML = renderQuestion(node);
+  }
+  window.scrollTo(0, 0);
+}
+
+function renderQuestion(node) {
+  let html = `<div class="card">
+    <div class="card-head">
+      <div class="step-badge">${node.badge || ''}</div>
+      <h2>${node.q}</h2>`;
+  if (node.sub) html += `<p class="subtitle">${node.sub}</p>`;
+  html += `</div>`;
+
+  if (node.probe) {
+    html += `<div class="probe-box"><strong>${node.probe.label}</strong>${node.probe.text}</div>`;
+  }
+  if (node.note) {
+    html += `<div class="note-box">${node.note}</div>`;
+  }
+  if (node.adminui) {
+    html += `<div style="padding:0 24px">
+      <div class="adminui-hint">
+        <strong>Admin UI ‚Äî where to look</strong>
+        <ol>
+          <li>Open the transfer in Admin UI</li>
+          <li>Scroll to the <strong>Recipient</strong> section</li>
+          <li>Check <strong>"Name from provider"</strong> ‚Äî is it populated?</li>
+          <li>Compare to <strong>"Name entered by user"</strong></li>
+        </ol>
+      </div>
+    </div>`;
+  }
+
+  html += `<div class="options">`;
+  for (const opt of node.opts) {
+    html += `<button class="opt-btn" onclick="choose('${opt.next}')">
+      ${opt.label}
+      <span class="arrow">‚Ä∫</span>
+    </button>`;
+  }
+  html += `</div></div>`;
+
+  if (history.length > 1) {
+    html += `<div class="nav"><button class="btn-back" onclick="back()">‚Üê Back</button></div>`;
+  }
+  return html;
+}
+
+const BADGE_CLASS = {
+  zd: 'badge-zd', macro: 'badge-macro', call: 'badge-call',
+  escalate: 'badge-escalate', info: 'badge-info'
+};
+const BADGE_LABEL = {
+  zd: 'Zendesk', macro: 'Macro', call: 'Call', escalate: 'Escalate', info: 'Note'
+};
+
+function renderOutcome(node) {
+  let html = `<div class="outcome-card status-${node.status}">
+    <div class="outcome-header">
+      <div class="verdict">${statusLabel(node.status)}</div>
+      <h2>${node.title}</h2>
+      <p>${node.summary}</p>
+    </div>
+    <div class="outcome-body">
+      <h3>Actions for this ticket</h3>
+      <div class="action-list">`;
+
+  for (const a of node.actions) {
+    const cls = BADGE_CLASS[a.badge] || 'badge-info';
+    const lbl = BADGE_LABEL[a.badge] || a.badge;
+    html += `<div class="action-item">
+      <span class="action-badge ${cls}">${lbl}</span>
+      <span>${a.text}</span>
+    </div>`;
+  }
+  html += `</div>`;
+
+  if (node.tier2) {
+    html += `<div class="tier2-box"><strong>Tier 2 instructions</strong>${node.tier2.replace(/\n/g,'<br>')}</div>`;
+  }
+
+  html += `</div></div>`;
+  html += `<div class="nav">
+    <button class="btn-back" onclick="back()">‚Üê Back</button>
+    <button class="btn-restart" onclick="restart()">Start New Case</button>
+  </div>`;
+  return html;
+}
+
+function statusLabel(s) {
+  return {
+    not_asserted:    'Outcome ‚Äî Error Not Asserted',
+    customer_mistake:'Outcome ‚Äî Customer Mistake',
+    asserted:        'Outcome ‚Äî Error Asserted',
+    investigate:     'Outcome ‚Äî Escalate for Investigation',
+    wrong_process:   'Wrong Process',
+    cpu_cancel:      'Outcome ‚Äî Not a US Error',
+  }[s] || s;
+}
+
+// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+render();
+</script>
+</body>
+</html>
