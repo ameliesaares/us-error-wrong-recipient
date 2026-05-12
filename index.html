@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wrong Recipient ‚Äî US Error Diagnostic</title>
+  <title>Wrong Recipient &mdash; US Error Diagnostic</title>
   <style>
     :root {
       --green:       #02681F;
@@ -69,7 +69,7 @@
       padding: 24px 16px 80px;
     }
 
-    /* ‚îÄ‚îÄ QUESTION CARD ‚îÄ‚îÄ */
+    /* -- QUESTION CARD -- */
     .card {
       background: var(--white);
       border-radius: 12px;
@@ -155,7 +155,7 @@
     .opt-btn .arrow { margin-left: auto; color: var(--border); font-size: 16px; }
     .opt-btn:hover .arrow { color: var(--mid-green); }
 
-    /* ‚îÄ‚îÄ ADMIN UI CHECK CARD ‚îÄ‚îÄ */
+    /* -- ADMIN UI CHECK CARD -- */
     .adminui-hint {
       margin: 0 24px 16px;
       background: var(--light-gray);
@@ -166,7 +166,7 @@
     .adminui-hint strong { display: block; color: var(--slate); margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .4px; }
     .adminui-hint ol { padding-left: 18px; color: var(--mid-gray); line-height: 1.6; }
 
-    /* ‚îÄ‚îÄ OUTCOME CARDS ‚îÄ‚îÄ */
+    /* -- OUTCOME CARDS -- */
     .outcome-card {
       border-radius: 12px;
       overflow: hidden;
@@ -248,7 +248,7 @@
     }
     .tier2-box strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px; color: #991B1B; }
 
-    /* ‚îÄ‚îÄ NAVIGATION ‚îÄ‚îÄ */
+    /* -- NAVIGATION -- */
     .nav {
       display: flex;
       gap: 10px;
@@ -277,7 +277,7 @@
     }
     .btn-restart:hover { background: var(--mid-green); }
 
-    /* ‚îÄ‚îÄ RULES BANNER ‚îÄ‚îÄ */
+    /* -- RULES BANNER -- */
     .rules-banner {
       background: var(--white);
       border-bottom: 1px solid var(--border);
@@ -415,9 +415,9 @@
 <div class="main" id="main"></div>
 
 <script>
-// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// ---------------------------------------------
 // RULES BANNER TOGGLE
-// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// ---------------------------------------------
 function toggleRules() {
   const body    = document.getElementById('rulesBody');
   const chevron = document.getElementById('rulesChevron');
@@ -425,12 +425,12 @@ function toggleRules() {
   chevron.classList.toggle('collapsed', collapsed);
 }
 
-// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// ---------------------------------------------
 // DECISION TREE
-// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// ---------------------------------------------
 const NODES = {
 
-  // ‚îÄ‚îÄ ROOT ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+  // -- ROOT ----------------------------------
   start: {
     badge: 'Step 1',
     q: 'What type of transfer is this?',
@@ -442,7 +442,7 @@ const NODES = {
     ]
   },
 
-  // ‚îÄ‚îÄ MOBILE MONEY ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+  // -- MOBILE MONEY -------------------------
   mm_q1: {
     badge: 'MM ‚Äî Step 2',
     q: 'Ask the customer: "What do you think went wrong with this transfer?"',
@@ -539,7 +539,7 @@ const NODES = {
     ]
   },
 
-  // ‚îÄ‚îÄ BANK TRANSFER ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+  // -- BANK TRANSFER -------------------------
   bank_q1: {
     badge: 'Bank ‚Äî Step 2',
     q: 'Ask the customer: "What do you think went wrong with this transfer?"',
@@ -601,7 +601,7 @@ const NODES = {
     ]
   },
 
-  // ‚îÄ‚îÄ CPU ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+  // -- CPU -----------------------------------
   cpu_q1: {
     badge: 'CPU ‚Äî Step 2',
     q: 'What is the customer reporting?',
@@ -612,9 +612,9 @@ const NODES = {
     ]
   },
 
-  // ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+  // -----------------------------------------
   // OUTCOMES
-  // ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+  // -----------------------------------------
 
   out_not_asserted: {
     type: 'outcome',
@@ -825,9 +825,9 @@ const NODES = {
   },
 };
 
-// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// ---------------------------------------------
 // STATE
-// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// ---------------------------------------------
 let history = ['start'];
 
 function current() { return history[history.length - 1]; }
@@ -846,9 +846,9 @@ function restart() {
   render();
 }
 
-// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// ---------------------------------------------
 // BREADCRUMB
-// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// ---------------------------------------------
 const LABELS = {
   start:              'Start',
   mm_q1:             'MM ‚Äî What happened',
@@ -877,9 +877,9 @@ function breadcrumb() {
   el.innerHTML = parts.join('<span class="sep"> ‚Ä∫ </span>');
 }
 
-// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// ---------------------------------------------
 // RENDER
-// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// ---------------------------------------------
 function render() {
   const node = NODES[current()];
   if (!node) return;
@@ -933,7 +933,7 @@ function renderQuestion(node) {
   html += `</div></div>`;
 
   if (history.length > 1) {
-    html += `<div class="nav"><button class="btn-back" onclick="back()">‚Üê Back</button></div>`;
+    html += `<div class="nav"><button class="btn-back" onclick="back()">&larr; Back</button></div>`;
   }
   return html;
 }
@@ -973,7 +973,7 @@ function renderOutcome(node) {
 
   html += `</div></div>`;
   html += `<div class="nav">
-    <button class="btn-back" onclick="back()">‚Üê Back</button>
+    <button class="btn-back" onclick="back()">&larr; Back</button>
     <button class="btn-restart" onclick="restart()">Start New Case</button>
   </div>`;
   return html;
@@ -981,16 +981,16 @@ function renderOutcome(node) {
 
 function statusLabel(s) {
   return {
-    not_asserted:    'Outcome ‚Äî Error Not Asserted',
-    customer_mistake:'Outcome ‚Äî Customer Mistake',
-    asserted:        'Outcome ‚Äî Error Asserted',
-    investigate:     'Outcome ‚Äî Escalate for Investigation',
+    not_asserted:    'Outcome \u2014 Error Not Asserted',
+    customer_mistake:'Outcome \u2014 Customer Mistake',
+    asserted:        'Outcome \u2014 Error Asserted',
+    investigate:     'Outcome \u2014 Escalate for Investigation',
     wrong_process:   'Wrong Process',
-    cpu_cancel:      'Outcome ‚Äî Not a US Error',
+    cpu_cancel:      'Outcome \u2014 Not a US Error',
   }[s] || s;
 }
 
-// ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+// ---------------------------------------------
 render();
 </script>
 </body>
